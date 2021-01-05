@@ -11,14 +11,15 @@ import "os"
 import "net/rpc"
 import "net/http"
 
+// Status represents the status of task.
 type Status int
-
 const (
 	NotStarted Status = iota
 	InProgress
 	Complete
 )
 
+// Struct task contains task information.
 type Task struct {
 	// Task id.
 	id int
@@ -36,13 +37,15 @@ type Task struct {
 
 type Master struct {
 	// Your definitions here.
-	// mapTasks key is input path, value indicates whether map job is done or not.
+	// mapTasks represents all map tasks. It is initialized when master created and one map task represents one input
+	// file, so map task's bucketed is initialized as true.
 	mapTasks []Task
-	// reduceTasks key is the key emitted from mapper, value indicates whether reduce job is done or not.
+	// reduceTasks represents all reduce tasks. It is initialized when master created.
+	// Some reduce tasks may not be a real task if Task.bucketed is false.
 	reduceTasks []Task
 	// maximum number of reducer.
 	numReducer int
-	// Lock ofr master.
+	// Lock for master. Used to avoid race condition.
 	mutex sync.Mutex
 }
 
