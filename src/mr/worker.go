@@ -110,7 +110,7 @@ func ReducerWork(reducef func(string, []string) string) {
 	}
 	outputFilePath := workerResponse.FilePath
 	reduceId := workerResponse.Id
-	inputFilePaths, _ := filepath.Glob("mr-[0-9]-" + strconv.Itoa(reduceId))
+	inputFilePaths, _ := filepath.Glob("mr-[0-9]*-" + strconv.Itoa(reduceId))
 	if inputFilePaths != nil {
 		reducerMap := map[string][]string {}
 		for _, inputFilePath := range inputFilePaths {
